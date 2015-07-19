@@ -1,5 +1,16 @@
 # Reproducible Research: Peer Assessment 1
 
+This R script loads, processes, and explores data from a personal activity 
+monitoring device that is tracking steps per day at 5 minute time intervals. 
+The data is explored by calculating the mean and median steps per day and 
+displaying them in a histogram. The steps per time interval is also viewed in 
+a line chart, noting the time interval that has the highest amount of steps 
+on average across days. Next the NA values are replaced with imputed numbers 
+using the median time interval and the mean, median, and histogram of the 
+steps per day is checked on the new data. Finally, the steps per time interval 
+are compared for weekdays and weekends using line charts to see if there is 
+a notable difference in daily activity pattern.
+
 
 ## Loading and preprocessing the data
 The first thing I do is load the necessary pacakges. 
@@ -23,7 +34,7 @@ library(dplyr)
 ## 
 ##     intersect, setdiff, setequal, union
 ```
-Then I unzip the folder to extract the data. 
+Then I unzip the folder to extract the data for analysis. 
 
 
 ```r
@@ -87,7 +98,7 @@ activity.spd.median
 ```
 ## [1] 10395
 ```
-The mean total number of steps taken per day is 9354.2295082 and the 
+The mean total number of steps taken per day is 9354 and the 
 median is 10395.
 
 
@@ -124,6 +135,9 @@ text(1500, 190, paste("The max average time interval \n is at",
 
 ![](PA1_template_files/figure-html/unnamed-chunk-9-1.png) 
 
+The maximum average time interval is at 8:35 with 206 steps taken on
+average.
+
 ## Imputing missing values
 Check to see how many missing values there are.
 
@@ -138,7 +152,7 @@ rows.na
 ## [1] 2304
 ```
 
-There are 2304 with missing values.  
+There are 2304 rows with missing values.  
 Then apply a strategy for imputing numbers into the missing values. The strategy
 is to use the median steps per time interval. 
 
@@ -204,8 +218,9 @@ hist(activity.im.spd$spd, main = "Histogram of Total Steps per Day",
 
 The median of 10395 is the same for the original data set and 
 the data set with imputed values. However, the mean of the original data set is
-9354.2295082 and the mean of the data set with imputed values is
-9503.8688525.
+9354 and the mean of the data set with imputed values is
+9504. The mean is pulled up by replacing the NAs with 
+imputed values calculated using median time interval.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
@@ -246,3 +261,13 @@ print(g)
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-14-1.png) 
+
+We can see from the charts that steps per interval exhibits a different pattern 
+on weekends compared to weekdays. On weekdays there is a prominent spike in 
+steps at and around 8:35am. On weekends the spike is less apparent and the variation
+in the steps per interval is less dramatic. The next step will be to identify the 
+reasons why there is a different pattern.   
+
+
+
+

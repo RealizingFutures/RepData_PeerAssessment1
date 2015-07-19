@@ -5,18 +5,29 @@ output:
     keep_md: true
 ---
 
+This R script loads, processes, and explores data from a personal activity 
+monitoring device that is tracking steps per day at 5 minute time intervals. 
+The data is explored by calculating the mean and median steps per day and 
+displaying them in a histogram. The steps per time interval is also viewed in 
+a line chart, noting the time interval that has the highest amount of steps 
+on average across days. Next the NA values are replaced with imputed numbers 
+using the median time interval and the mean, median, and histogram of the 
+steps per day is checked on the new data. Finally, the steps per time interval 
+are compared for weekdays and weekends using line charts to see if there is 
+a notable difference in daily activity pattern.
+
 
 ## Loading and preprocessing the data
 The first thing I do is load the necessary pacakges. 
 
-```{r}
+```{r results="hide"}
 ## load packages
 library(ggplot2)
 library(dplyr)
 ```
-Then I unzip the folder to extract the data. 
+Then I unzip the folder to extract the data for analysis. 
 
-```{r echo=TRUE}
+```{r}
 ## unzip the download and extract files to working directory
 unzip("C:/Users/Jared/RepData_PeerAssessment1/activity.zip")
 ```
@@ -62,7 +73,7 @@ It is also helpful to consider the median, especially if the data are non-normal
 activity.spd.median <- median(activity.spd$spd)
 activity.spd.median
 ```
-The mean total number of steps taken per day is `r activity.spd.mean` and the 
+The mean total number of steps taken per day is `r round(activity.spd.mean,0)` and the 
 median is `r activity.spd.median`.
 
 
@@ -95,6 +106,11 @@ text(1500, 190, paste("The max average time interval \n is at",
         "average steps taken."))
 ```
 
+The maximum average time interval is at `r sub("(\\d+)(\\d{2})", "\\1:\\2", 
+activity.spi[with(activity.spi, which.max(spi)), 1])` with `r 
+round(activity.spi[with(activity.spi, which.max(spi)), 2], 0)` steps taken on
+average.
+
 ## Imputing missing values
 Check to see how many missing values there are.
 
@@ -105,7 +121,7 @@ rows.na
 
 ```
 
-There are `r rows.na` with missing values.  
+There are `r rows.na` rows with missing values.  
 Then apply a strategy for imputing numbers into the missing values. The strategy
 is to use the median steps per time interval. 
 
@@ -156,8 +172,9 @@ hist(activity.im.spd$spd, main = "Histogram of Total Steps per Day",
 
 The median of `r activity.im.median` is the same for the original data set and 
 the data set with imputed values. However, the mean of the original data set is
-`r activity.spd.mean` and the mean of the data set with imputed values is
-`r activity.im.mean`.
+`r round(activity.spd.mean, 0)` and the mean of the data set with imputed values is
+`r round(activity.im.mean, 0)`. The mean is pulled up by replacing the NAs with 
+imputed values calculated using median time interval.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
@@ -196,3 +213,13 @@ g <- ggplot(activity.full.spi, aes(interval, spi)) +
 print(g)
 
 ```
+
+We can see from the charts that steps per interval exhibits a different pattern 
+on weekends compared to weekdays. On weekdays there is a prominent spike in 
+steps at and around 8:35am. On weekends the spike is less apparent and the variation
+in the steps per interval is less dramatic. The next step will be to identify the 
+reasons why there is a different pattern.   
+
+
+
+
