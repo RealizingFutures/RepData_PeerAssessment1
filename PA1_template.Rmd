@@ -20,7 +20,7 @@ a notable difference in daily activity pattern.
 ## Loading and preprocessing the data
 The first thing I do is load the necessary pacakges. 
 
-```{r results="hide"}
+```{r}
 ## load packages
 library(ggplot2)
 library(dplyr)
